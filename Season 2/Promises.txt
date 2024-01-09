@@ -1,0 +1,89 @@
+Theory ::
+
+#INTERVIEW Statement for Promise:
+  --A promise is an object representing the eventual completion or failure of an asynchronous operations.
+  --Promise have only three states, 1) Pending, 2) Fullfilled, 3) Rejected.
+  --Promise objects are immutable
+
+#IMPORTANT:
+  --Promise have only three states, 1) Pending, 2) Fullfilled, 3) Rejected.
+ 
+
+const cart = ["shoe", "pant", "watch"];
+
+/**
+createOrder api gives --> OrderId --> orderId used for payment proceedToPayment()
+--Here we are blindly trust the createOrder api and after it we assume it call the proceed to payment callback
+ -what if the api is written in bad way or it called the proceed to payment two times ?
+ */
+createOrder(cart, function (orderId) {
+  proceedToPayment(orderId);
+});
+
+// ===> To get rid of this situation we use the promises
+
+const data = createOrder(cart)
+// It will return promise object {data: undefined} with undefined, which filled later when got data's value after async time
+// Once we have value in empty object {data: OrderId}
+// then we attach callbackfn to promise object automatically called ONCE.
+
+
+data.then(function (orderId) {
+  proceedToPayment(orderId);
+});
+ 
+/**
+ * --Earlier we were passing the callback fn to another function (BAD WAY)
+ * --Now we are attaching callback fn to promise Object (data is a promise object) (GOOD WAY)
+ *       -Create order api only do its job to create orderId and fill the promise object with data ID
+ *       - As soon as data varibale Object filled with OrderId it call the callback fn
+ *       - we have a control of our program
+ * 
+ * --Promise object are immutable so that we can pass here and there in code
+*/
+
+____________________________________________________________________________________________________________________________
+
+code represention: of promise
+
+const GITHUB_API = "https://api.github.com/users/manu6677";
+// Inside user we get promise object b/c fetch return the Promise
+const user = fetch(GITHUB_API);
+console.log(user);
+
+// Below -> way to attach callbacks to promise object 
+
+user.then(function (data) {
+  console.log(data);
+});
+
+_____________________________________________________________________________________________________________________________
+
+// callback hell
+api.createOrder(cart, function (OrderId) {
+  api.proceedToPayment(OrderId, function (paymentInfo) {
+    showOrderSummary(paymentInfo, function () {
+      updateWalletBalance();
+    });
+  });
+});
+
+
+// Promise chaining with return callback
+api
+  .OrderId(cart)
+  .then(function (OrderId) {
+    return proceedToPayment(OrderId);
+  })
+  .then(function (paymentInfo) {
+    return showOrderSummary(paymentInfo);
+  })
+  .then(function (paymentInfo) {
+    return updateWalletBalance(paymentInfo);
+  });
+
+// Promise chaining with new way 
+api.OrderId(cart)
+  .then((OrderId) => proceedToPayment(OrderId))
+  .then((paymentInfo) => showOrderSummary(paymentInfo))
+  .then((paymentInfo) => updateWalletBalance(paymentInfo));

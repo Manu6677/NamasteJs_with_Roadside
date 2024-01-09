@@ -1,0 +1,129 @@
+
+/*
+  -->In HOF function, the function is passed to another function is called HOF
+    -Here function a() is passed to function b() as a callback
+*/
+function b(a) {
+  console.log("Inside fn b");
+  a();
+  console.log(a);
+}
+
+function a() {
+  console.log("I am function a");
+}
+b(a); 
+
+___________________________________________________________________________________
+
+// Bad way of writting code always do a breakdown of code and make it reuseable 
+// Code must not be DRY (don't repeat yourself)
+
+const radius = [3, 1, 2, 4];
+
+const calculateArea = function (radius) {
+  const output = [];
+  for (let i = 0; i < radius.length; i++) {
+    output.push(Math.PI * radius[i] * radius[i]);
+  }
+  return output;
+};
+
+console.log(calculateArea(radius));
+
+const calculateCircumference = function (radius) {
+  const output = [];
+  for (let i = 0; i < radius.length; i++) {
+    output.push(Math.PI * radius[i]);
+  }
+  return output;
+};
+console.log(calculateCircumference(radius));
+
+const calculateDiameter = function (radius) {
+  const output = [];
+  for (let i = 0; i < radius.length; i++) {
+    output.push(2 * radius[i]);
+  }
+  return output;
+};
+console.log(calculateDiameter(radius));
+
+__________________________________________________________________
+
+// This is Good way and the code is also modular and reuseable
+
+const radius = [3, 1, 2, 4];
+
+const area = function (radius) {
+  let area = Math.PI * radius * radius;
+
+  return area;
+};
+
+const circumference = function (radius) {
+  let circum = Math.PI * radius;
+  return circum;
+};
+
+const diameter = function (radius) {
+  let dia = 2 * radius;
+  return dia;
+};
+
+const calculateCircle = function (radius, logic) {
+  const output = [];
+
+  for (let i = 0; i < radius.length; i++) {
+    output.push(logic(radius[i]));
+  }
+  return output;
+};
+
+console.log(calculateCircle(radius, area));
+console.log(calculateCircle(radius, circumference));
+console.log(calculateCircle(radius, diameter));
+
+// outputArea.push(Math.PI * radius[i] * radius[i]);
+// outputCircumderence.push(Math.PI * radius[i]);
+// outputDiameter.push(2 * radius[i]);
+
+__________________________________________________________________
+
+// Array.prototype and map
+
+const radius = [3, 1, 2, 4];
+
+const area = function (radius) {
+  let area = Math.PI * radius * radius;
+
+  return area;
+};
+
+const circumference = function (radius) {
+  let circum = Math.PI * radius;
+  return circum;
+};
+
+const diameter = function (radius) {
+  let dia = 2 * radius;
+  return dia;
+};
+
+Array.prototype.calculateCircle = function (logic) {
+  const output = [];
+
+  for (let i = 0; i < this.length; i++) {
+    output.push(logic(this[i]));
+  }
+  return output;
+};
+
+console.log(radius.map(area));
+console.log(radius.calculateCircle(area));
+// console.log(calculateCircle(radius, circumference));
+// console.log(calculateCircle(radius, diameter));
+
+// outputArea.push(Math.PI * radius[i] * radius[i]);
+// outputCircumderence.push(Math.PI * radius[i]);
+// outputDiameter.push(2 * radius[i]);

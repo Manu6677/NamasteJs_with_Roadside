@@ -1,0 +1,35 @@
+/*
+  --Similarly as we study in First class fn: ability of a function to pass as a value to another function and returned from the function called First Class Callback
+    -Function passing as an argument called CallBack functions
+
+*/
+
+setTimeout(() => {
+  console.log("I am setTimeout");
+}, 5000);
+
+function x(y) {
+  console.log("x");
+  y();
+}
+
+// --Here function is passed as a callback fn inside fn x()
+//   -Now its x fn responsibility to execute this callback fn
+x(function () {
+  console.log("y");
+});
+
+_____________________V.V.IMP___________________________________________________________________________
+
+/*
+   --This is what closure is here inside fn is forming closure with the outer function
+    -It is very imp to remove the event listeners because it takes alot of space here
+ */
+
+function eventListener() {
+  let count = 0;
+  document.getElementById("clickME").addEventListener("click", function xyz() {
+    console.log("Button is Clicked", ++count);
+  });
+}
+eventListener();

@@ -1,0 +1,115 @@
+/**
+  -Block scoped: All variables and function we can access inside the block called blocked scoped, let and const are block scoped
+   -after this code executed you can not access the let and const outside the block hence they are block scopeed
+     -but we can access the var outside the block b/c it is global scope
+ */
+
+{
+  var a = 10;
+  let b = 20;
+  const c = 30;
+  console.log(a);
+  console.log(b);
+  console.log(c);
+}
+
+console.log(a);
+//can not access these b and c (let, const) b/c block scope is executed now there is no b,c exist
+console.log(b);
+console.log(c);
+
+--------------------------------------------------------------------------------------------------
+
+/**
+  -Shadowing 
+ */
+
+/*
+-In this example with var value of a is changed inside the block called shadowing
+  -since a is global scope and they both pointing to same memory space 
+    -so its value remain changed to 10 from 100
+*/
+var a = 100;
+{
+  var a = 10;
+  let b = 20;
+  const c = 30;
+  console.log(a);
+  console.log(b);
+  console.log(c);
+}
+console.log(a);
+
+
+/**
+-In this example with let value of b outside is 100 but inside the value of b is 20
+ -inside block console b give 20 (b/c this b is in different memory space and it is shadowing),
+   -meanwhile outside b is at a different memory space (in script)
+    -both pointing to different memory space
+
+
+  not for blockscope for function scope it behave the same way  
+ */
+let b = 100;
+{
+  var a = 10;
+  let b = 20;
+  const c = 30;
+  console.log(a);
+  console.log(b);
+  console.log(c);
+}
+console.log(b);
+
+/*
+similar behaviour with [const + function scope]
+*/
+
+let c = 100;
+function x() {
+  var a = 10;
+  let b = 20;
+  const c = 30;
+  console.log(a);
+  console.log(b);
+  console.log(c);
+}
+x();
+console.log(c);
+
+
+
+/**
+ Illegal shadowing b/c here a is crossing boundry of scope
+  */
+let a = 10;
+{
+  var a = 20;
+  console.log(a);
+}
+
+//But in this example not like upper eg there is no problem with var b because it is inside the boundary
+//  -its boundary is not scoped inside the function
+let b = 10;
+function x() {
+  var b = 20;
+  console.log(b);
+}
+x();
+
+----------------------------------------------
+
+/*
+-Legal shadowing
+*/
+let a = 10;
+{
+  let a = 100;
+  console.log(a);
+}
+console.log(a);
+
+var b = 20;
+{
+  let b = 200;
+}

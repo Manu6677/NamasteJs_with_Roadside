@@ -1,0 +1,126 @@
+// Function Statement aka Function Declaration
+
+a();
+b();
+function a() {
+  console.log("I am function a");
+}
+
+// function expression
+var b = function () {
+  console.log("I am function b");
+};
+
+/** IMP
+  --The main difference between the function statement and function expression
+     is "hoisting Difference"
+    -Here a is hoisted but b is not because we are accessing function b like it b()
+    -but yet b is undefined and we are accessing it as a function so it gave error 
+    -that b is not a function
+
+    imp
+
+    But you call b() function after declaration it will work fine
+ */
+
+________________________________________________________________________________________________
+
+
+/*
+ --Anonymous function (function who do not have any name)
+   -This function statment give error b/c it require name
+*/
+
+// function () {
+
+// }
+
+// but if you write anonymous fn inside a varibale it will not complain
+var x = function () {
+  console.log("I am anonymous fn");
+};
+x();
+
+/*
+ --Anonymous function (function who do not have any name)
+   -This function statment give error b/c it require name
+*/
+
+ function () {
+
+ }
+
+// but if you write anonymous fn inside a varibale it will not complain
+var x = function () {
+  console.log("I am anonymous fn");
+};
+x();
+
+________________________________________________________________________________________________
+
+
+/*  NAMED fn EXPRESSION 
+  -Yaha pr function abc ko assign kia hai varibale m ke ander
+   -Toh jab m() call kroge sb perfect chalega
+   -but abc() call kroge toh nhi hoga b/c global execution m nhi hai abc fn
+
+*/
+
+var m = function abc() {
+  console.log(abc);
+};
+m(); // call
+abc(); //Not call
+
+/*
+   -- Jo pass kara jata hai wo arguement hota hai aur jis funmtion m receive kia jata hai
+    --usko parameter kehte hai
+*/
+
+________________________________________________________________________________________________
+
+/* First class functions or First Class Citizens (same)
+  --Ability of function to be used as values and can be pass this in an arguement to another function
+   -and returned from the functions is called first class function
+
+*/
+
+//Eg: 1) with anonymous fn pass as an argument to another fn
+var x = function (param1) {
+  console.log(param1);
+};
+
+x(function () {
+  console.log("Iam anonymous fn");
+});
+
+//Eg: 2) with named fn pass as an argument to another fn
+
+var y = function (param2) {
+  console.log(param2);
+};
+
+y(function abc() {
+  console.log("Iam named fn");
+});
+
+// Returing anonymous and named fn from fn
+
+var m = function () {
+  return function () {
+    console.log("First class fn example of returning anonymous fn");
+  };
+};
+
+console.log(m());
+
+//Returing named function from a function
+
+const n = function () {
+  return function kkr() {
+    console.log("Iam first class named function");
+  };
+};
+
+console.log(n());
+

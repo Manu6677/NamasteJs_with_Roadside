@@ -1,0 +1,66 @@
+Clousers:
+/*
+Clousers:  It is a combination of a function bundled together (enclosed) with the
+           -references to its lexical environment
+          A clousers gives the access to an outer function's scope from inner function
+              -In javascript closures are created every time a function is created
+
+           DISADVANTAGES OF CLOSURES
+        --Over consumption of the memory every time closures is formed it consume the memory
+         -and those closed varibales are not garbage collector, so it like accumlating lot of memory space if we create a lot of closures
+          -b/c those variable not garbagge collected till the program not expires if nothandle properly it can result into memory leak
+
+       GARBAGGE COLLECTOR: It is basically a program in browser or javascript engine which kind of freez the unutilized memory
+
+//--> In below example return y function and after execution of function x, its execution context is popped off
+//- but function y still remember its lexial scope fron where it came
+// -when return y function not only y was returned closure was returned(function with lexical scope was returned)
+
+
+// function x() {
+//   var a = 77;
+//   const b = 20;
+//   function y() {
+//     console.log(a);
+//   }
+
+//   return y;
+// }
+// var m = x();
+// console.log(m);
+// m();
+
+
+//-> In this example in console see acess to the upper functions 
+
+function z() {
+  var a = 100;
+
+  function y() {
+    var b = 39;
+    return function x() {
+      console.log(a);
+    };
+  }
+  y();
+}
+const h = z();
+console.log(z());
+
+__________________________________________________________________
+
+function outest() {
+  var x = 1000;
+
+  function outer(b) {
+    const y = 900;
+    function inner() {
+      console.log(x, y, b);
+    }
+    return inner;
+  }
+  return outer;
+}
+
+const m = outest()("hello");
+m();

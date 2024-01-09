@@ -1,0 +1,165 @@
+
+// Ques 1 - what is event propogation
+// Ques 2 - what is Event Bubbling (focus, blur not work on event Bubbling)
+// Ques 3 - Diff b/w event.target vs event.currentTarget vs this.target
+/**
+ * -In event Bubbling work like bubble from (Inside to outside event trigerr)
+ *   -Sbse bhar wale pr lgya h ONLY toh ander kisi b pr click kr toh sbse bhar wala triger hoga hi
+ *   -But sbse ander wale pr lgya h ONLY toh bs ander ka hi hoga triger bss
+ *   - Can be stop by e.stoppropogation
+ *
+ *    1) event.currentTarget : Normal bubbling ke jaise work krega in order (from inside to outside) with current tagName
+ *    2) event.target : Jis pr click hua wahi target lock, consider initial click as target
+ *    3) this.tagName : It work same as event.currentTarget
+ */
+
+
+Html and css code below for bubbling: 
+
+<div>
+      DIV
+      <form action="">
+        FORM
+        <button>BUTTON</button>
+      </form>
+</div>
+
+css:
+body * {
+  font-family: monospace;
+  padding: 25px 20px 25px 50px;
+  border: 1px solid red;
+}
+
+
+index.js codde below:
+
+const div = document.querySelector("div");
+const form = document.querySelector("form");
+const button = document.querySelector("button");
+
+div.addEventListener("click", fnc);
+
+form.addEventListener("click", fnc);
+
+button.addEventListener("click", fnc);
+
+function fnc(event) {
+  alert(
+    "Current Target = " +
+      event.currentTarget.tagName +
+      ", Target = " +
+      event.target.tagName +
+      ", This = " +
+      this.tagName
+  );
+}
+________________________________________________________________________________
+
+ -- Event Capturing --
+
+ 
+/**
+ * -Event Capturing mai bs:  ,{capture: true,} krdo baki bubble se ulta flow hoga
+ * 
+ */
+
+const div = document.querySelector("div");
+const form = document.querySelector("form");
+const button = document.querySelector("button");
+
+div.addEventListener(
+  "click",
+  function () {
+    alert("div");
+  },
+  {
+    capture: true,
+  }
+);
+
+form.addEventListener(
+  "click",
+  function () {
+    alert("form");
+  },
+  {
+    capture: true,
+  }
+);
+
+button.addEventListener(
+  "click",
+  function () {
+    alert("button");
+  },
+  {
+    capture: true,
+  }
+);
+
+________________________________________________________________________________
+ 
+Event propogation pr swal ki ese flow krwa ke dikhao [form--> button --> div]
+
+div.addEventListener("click", function () {
+  alert("div");
+});
+
+form.addEventListener(
+  "click",
+  function () {
+    alert("form");
+  },
+  {
+    capture: true,
+  }
+);
+
+button.addEventListener("click", function () {
+  alert("button");
+});
+________________________________________________________________________________
+
+-- Event Deligation :
+Events can be added to a parent element instead of adding to every single element. 
+It refers to the process of using event propagation (bubbling) to handle events 
+at a higher level in the DOM than the element on which the event originated.
+
+html body code :
+
+ <!-- <div class="products">
+      <span class="mobile">mobile</span>
+      <span class="Headphone">headphone</span>
+      <span class="laptop">laptop</span>
+      <span class="speaker">speaker</span>
+      <span class="USB Dock">Usb dock</span>
+      <span class="Tripod">tripod</span>
+    </div> -->
+
+CSS:
+.products {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 100px 100px 100px;
+}
+
+span {
+  width: 100px;
+  height: 100px;
+  background-color: bisque;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+index.js code below: 
+
+document.querySelector(".products").addEventListener("click", (event) => {
+  console.log(event);
+  if (event.target.tagName === "SPAN") {
+    window.location.href += "/" + event.target.className;
+  }
+});
+
+-- EVENT DELIGATION Example [Create modal which closes when click on negative space]--

@@ -1,0 +1,244 @@
+/**
+  -Interview answer of async and await
+   ==> async is keyword use with function and await is different thing which used inside the async function only to handle promises.
+     ==> These promises are asynchronous 
+       ==> then give example
+     
+  -async and await help is better because it avoid older way passing callbacks and promise chaining 
+ */
+
+ 
+/*
+Example(1);
+- async is a special type of function which return the promise and we resolved it by then
+- here namaste is wrapped inside the promise then returned
+- either you return the value or promise directly.
+*/
+async function getData() {
+  return "namaste";
+}
+const data = getData();
+console.log(data);
+
+data.then((res) => console.log(res));
+
+/*
+- Continue eg:1, promise return instead of value
+   
+  # catch (promise inside promise(asyn) fn return promise not promise wrapped inside promise) 
+  - Here return p which is promise but this is not the case, promise wrapped inside promise b/c of async only promise is returned only
+*/
+const p = new Promise((resolve, reject) => {
+  resolve("Resolved promise!!!");
+});
+async function getData() {
+  return p;
+}
+const data = getData();
+console.log(data);
+
+data.then((res) => console.log(res));
+
+___________________________________________________
+
+/*
+Ex 2: (using await with async)
+ - async and await together handle the promise in a combo
+*/
+const p = new Promise((resolve, reject) => {
+  resolve("Promise resolved value !");
+});
+
+//==> Older way to handle promise (before async and await)
+// function getData() {
+//   p.then((res) => console.log(res));
+// }
+// getData();
+
+//==> When async await came that how promise handle with combo of (async and await)
+//       -Basically await resolved the promise
+async function handlePromise() {
+  const val = await p;
+  console.log(val);
+}
+handlePromise();
+
+_________________________________________________________
+
+/*
+Example: (3) [Diving deep into async & await]
+*/
+
+// In older way of resolving promise the program actually do not wait promise to be resolved
+//  -then move (it actually moves and after promise resolved it came and print what ever in promise)
+//    -Js engine do not wait for promise to be resolved  
+// Outout : Namaste Javascript (then wait for 10 sec resolving promise) Promise Resolved
+ 
+const p = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Promise Resolved");
+  }, 10000);
+});
+
+function getData() {
+  p.then((res) => console.log(res));
+  console.log("Namaste Javascript");
+}
+getData();
+
+// ## BUT THINGS DIFF IN CASE OF async & await 
+
+--- async and await Example ---
+
+/*
+1) 
+  -Here Js engine was waiting for promise to be resolved once resolved then put 
+    -resolved promise in (val) 
+     -after it moves next until it wait at await line
+    
+   OUTPUT: Hello World
+            (wait 10 sec)
+            Namaste Javascript
+            Promise Resolved
+*/
+const p = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Promise Resolved");
+  }, 10000);
+});
+
+async function handlePromise() {
+  console.log("Hello World");
+  // Js engine was waiting for promise to be resolved
+  const val = await p;
+  console.log("Namaste Javascript");
+  console.log(val);
+}
+
+handlePromise();
+
+
+/*
+ 2)
+  -Here one promise is resolved twice so
+   -At (val1) Js engine wait to be resolved after 10 sec it promise resolved 
+    -immediately print these 
+      -OUTPUT: Hellow world
+             -- wait for 10 sec (after wait immediately print all)--
+              Namaste Javascript 1
+              Promise Resolved
+              Namaste Javascript 2
+              Promise Resolved
+*/
+
+const p = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Promise Resolved");
+  }, 10000);
+});
+
+async function handlePromise() {
+  console.log("Hello World");
+  // Js engine was waiting for promise to be resolved
+  const val1 = await p;
+  console.log("Namaste Javascript 1");
+  console.log(val1);
+
+  const val2 = await p;
+  console.log("Namaste Javascript 2");
+  console.log(val2);
+}
+
+handlePromise();
+
+-------------------------------------------
+
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Promise Resolved 1");
+  }, 10000);
+});
+
+const p2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Promise Resolved 2");
+  }, 5000);
+});
+
+async function handlePromise() {
+  console.log("Hello World");
+  // Js engine was waiting for promise to be resolved
+  const val1 = await p1;
+  console.log("Namaste Javascript 1");
+  console.log(val1);
+
+  const val2 = await p2;
+  console.log("Namaste Javascript 2");
+  console.log(val2);
+}
+
+handlePromise();
+
+/** VVIMP (Jaha execution choda wahi s shuru hoga wapis)
+ * When P1 is 5 sec and P2 is 10 sec
+ * --> In handle promise function Hello world print sudden
+ *    - But for P1 there is a time 5 sec to resolved so handlePromise function is suspended from callstack until it resolved
+ *      - Once Promise resolved after 5 sec it came ONCE AGAIN in call stack and execute right after await p1 (because JS is synchronous)
+ *
+ *    - When it came to await p2 line it AGAIN suspend the handlePromise function until it resolved as we know js wait for none
+ *       - SO 5 SEC ALREADY GONE TO RESOLVE P1 NOW IN REMAINING 5 SEC P2 GET RESOLVED
+ *        - AND handlePromise came to call stack and execute line after await p2 (because JS is synchronous)
+ *
+ *   #OUTPUT: Hello World
+ *            (after 5sec)
+ *            Namaste JS 1
+ *            Promise Resolved 1
+ *            (after 5 sec (b/c already 5 sec gone to resolve P1))
+ *             Namaste JS 2
+ *            Promise Resolved 2
+ */
+
+
+/**
+ *  WhWhen P1 is 10 sec and P2 is 5 sec
+ * --> In handle promise function Hello world print sudden
+ *    - But for P1 there is a time 10 sec to resolved so handlePromise function is suspended from callstack until it resolved
+ *      - Once Promise resolved after 10 sec it came ONCE AGAIN in call stack and execute right after await p1 (because JS is synchronous)
+ *
+ *    - When it came to await p2 line it found the this promise is already resolved as it has a less time to resolve
+ *     - SO immediately output will be printed
+ * 
+ *   #OUTPUT: Hello World
+ *            (after 10 sec)
+ *            Namaste JS 1
+ *            Promise Resolved 1
+ *            (Found p2 need less time to be resolved and it already resolved print immediately)
+ *             Namaste JS 2
+ *            Promise Resolved 2
+ */
+
+---------------------------------------------------------
+
+// Real life eg of async and await
+
+const API_URL = "https://api.github.com/users/manu6677";
+
+async function handlePromise() {
+  try {
+    const res = await fetch(API_URL);
+    const json = await res.json();
+    console.log(json);
+  } catch (err) {
+    console.log(err);
+  }
+}
+handlePromise();
+
+// fetch() => Response.json() => value
+
+// That is why people write like this
+// fetch().then(res=> res.json()).then(res => console.log())
+//  object (response object has a body which is readable stream, to convert readable stream into do .json(), .json() is again a promise when it resolve it gives the value)
+
+
+___________________________________________________________________________________

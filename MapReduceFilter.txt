@@ -1,0 +1,76 @@
+const arr = [5, 1, 3, 2, 6];
+
+function sum(arr) {
+  let sum = 0;
+  for (let i = 0; i < arr.length; i++) {
+    sum = sum + arr[i];
+  }
+  return sum;
+}
+console.log(sum(arr));
+
+const sumReduce = arr.reduce((acc, curr) => {
+  acc = acc + curr;
+  return acc;
+}, -1);
+
+console.log(sumReduce);
+
+const maxi = arr.reduce((acc, curr) => {
+  if (acc < curr) {
+    acc = curr;
+  }
+  return acc;
+}, 0);
+
+console.log(maxi);
+
+__________________________________________________________________
+
+
+const user = [
+  { firstName: "akshay", lastName: "saini", age: "26" },
+  { firstName: "donald", lastName: "trump", age: "75" },
+  { firstName: "elon", lastName: "musk", age: "50" },
+  { firstName: "deepika", lastName: "padukone", age: "26" },
+];
+
+// res = [akshay saini, donald trump, elon musk, deepika padukone]
+// res2 = {26: 2, 75: 1, 50: 1}
+
+// Map and Reduce example accoding to the upper result
+const names = user.map((it) => {
+  return it.firstName + " " + it.lastName;
+});
+
+console.log(names);
+
+const ageNumber = user.reduce((acc, curr) => {
+  if (acc[curr.age]) {
+    acc[curr.age]++;
+  } else {
+    acc[curr.age] = 1;
+  }
+
+  return acc;
+}, {});
+
+console.log(ageNumber);
+
+// Code for filtering firstName whose age less than 30 via filter and map
+const firstNameAgeLessThan30 = user
+  .filter((it) => it.age < 30)
+  .map((name) => {
+    return name.firstName;
+  });
+console.log(firstNameAgeLessThan30);
+
+// Code for filtering firstName whose age less than 30 via Reduce
+const firstNameAgeLessThan30ViaReduce = user.reduce((acc, curr) => {
+  if (curr.age < 30) {
+    acc.push(curr.firstName);
+  }
+  return acc;
+}, []);
+
+console.log(firstNameAgeLessThan30ViaReduce);

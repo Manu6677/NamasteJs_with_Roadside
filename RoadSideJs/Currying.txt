@@ -1,0 +1,131 @@
+
+/*
+  -Currying in Js transform a function with multiple arguments into nested series of function, each taking single arguement
+   -Currying help us to avoid same variable multiple times
+    -Currying help to create Higher Order Function
+*/
+
+// Example f(a, b) into f(a)(b)
+
+function f(a) {
+  return function (b) {
+    console.log(`${a}, ${b}`);
+  };
+}
+
+f(5)(8);
+
+//Explain in Interview: In currying function take one arguement at a time and return fn expecting next arguement
+function sum(a) {
+  return function (b) {
+    return function (c) {
+      return a + b + c;
+    };
+  };
+}
+console.log(sum(2)(6)(1));
+
+//__________________________________________________________________;
+
+/**
+ * Another question of currying
+ * evaluate("add")(4)(2)
+ * evaluate("multiply")(4)(2)
+ * evaluate("divide")(4)(2)
+ * evaluate("substract")(4)(2)
+ */
+
+function evaluate(operation) {
+  return function (a) {
+    return function (b) {
+      if (operation === "add") return a + b;
+      else if (operation === "multiply") return a * b;
+      else if (operation === "divide") return a / b;
+      else if (operation === "substract") return a - b;
+      else return "Invalid operation";
+    };
+  };
+}
+
+const add = evaluate("add");
+console.log(add(2)(3));
+console.log(add(3)(3));
+console.log(add(4)(3));
+
+//________________________________________________________________
+
+// infinite currying
+function summ(a) {
+  return function (b) {
+    if (b) return summ(a + b);
+    return a;
+  };
+}
+
+console.log(summ(2)(3)(6)(6)());
+
+//___________________________________________________________
+
+/*
+  -Difference Between currying and Partial function
+    -Currying: A Number of nested function a currying fn has depend on arguemnts it receive
+      -But in Partial fn
+    -Partial: this is not the case like currying if it return two fn but it can receive two arguement
+*/
+
+// Example of currying
+
+function sum(a) {
+  return function (b) {
+    return function (c) {
+      return a + b + c;
+    };
+  };
+}
+console.log(sum(1)(2)(2));
+
+// But in Partial can return two fn but receive three arguement
+
+function mul(a) {
+  return function (b, c) {
+    return a * b * c;
+  };
+}
+
+console.log(mul(10)(2, 1));
+
+//___________________________________________________________
+
+/*
+   -RealLife example of currying
+   -We can use currying to manipulating DOM [Just create the id in HTML file and can change it from here]
+*/
+
+function updateElementText(id) {
+  return function (content) {
+    document.querySelector("#" + id).textContent = content;
+  };
+}
+updateElementText("heading")("Namaste JavaScript🙌");
+
+//___________________________________________________________
+
+/**  IMP
+ * -Implementation of currying (Imp for senior roles but can be in Junior interview)
+ */
+
+function curry(func) {
+  return function curriedFunc(...args) {
+    if (args.length >= func.length) {
+      return func(...args);
+    } else {
+      return function (...next) {
+        return curriedFunc(...args, ...next);
+      };
+    }
+  };
+}
+
+const jama = (a, b, c, d) => a + b + c + d;
+const totalJama = curry(jama);
+console.log(totalJama(3)(4)(1)(2));

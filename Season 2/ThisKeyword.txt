@@ -1,0 +1,122 @@
+Interview Questions :
+1) What is the value of this keyword?
+ans) This keyword value depend on where we are writting it (different runtime env have different value of this keyword),
+     for browser it has window object, for node env it has different Global object.
+
+2) What is the value of this keyword inside the function?
+ans) This keyword is undefined inside function but b/c javascript has this Substiution,
+     so this keyword value become equal to global object if you do not use strict mode.
+     The value becomes window object.
+
+     In "Non Strict" mode: this keyword equal to global object because of "this Substiution". Non Strict mode mai "this Substiution" work krta hai...
+     But in "strict" mode it is undefined, hence
+     value of this keyword depends on "strict" and non "strict mode"
+
+     function x() {
+         console.log(this);
+         }
+       
+       x();
+
+
+3) Remember, this keyword value also depends "how it is called" All Exp in Strict mode. 
+
+    Ex 1:
+      function x() {
+        console.log(this);
+      }
+       
+      x();
+
+      output => undefined
+
+   Ex 2:
+      function x() {
+         console.log(this);
+      }
+       
+       window.x();
+
+       output => window object
+
+
+4) Remember, when there function inside the object, then this keyword refers to in which 
+   - this keyword is enclosed.
+   Ex:
+      
+     const obj = {
+      a: 10,
+      x: function () {
+         console.log(this) => output: {a: 10, x: ƒ}
+         console.log(this.a) => output: 10
+      }
+};
+  obj.x();
+
+5) Call, apply, bind use for the (sharing methods).
+   Suppose i want to use the printName "Method" inside the "student2" then i will "use call method for sharing a method"
+   after using call method, this refers to student2 b/c we passed inside it.
+
+   const student = {
+    name: "Akshay",
+    printName: function () {
+      console.log(this.name)
+      }
+   };
+
+   const student2 = {
+    name: "Manu",
+   }
+
+   student.printName.call(student2);
+
+VVIMP:     
+6) Remember, for the "arrow function does not have this keyword binding", hence "they retain this value of enclosing Lexical context"
+ 
+   "KEEP IN MIND Lexical SCOPE FROM WHERE IT START FOR ARROW Function"
+  
+   Ex:
+      const obj = {
+         name: "Akshay",
+       x: ()=> {
+          console.log(this.name); -> in arrow fn refers to enclosing Lexical context value, o/p: main
+          console.log(this);  -> refers to enclosing Lexical context value, o/p: window obj
+         },
+      };
+
+    obj.x()
+
+    Ex 2: For a nested arrow function inside normal fn
+    const obj = {
+      a: "Akshay",
+      x: function() {
+      const y = () => {
+      console.log(this); -> it refers to its Lexical enclosed value, hence give o/p: {a: 'Akshay', x: ƒ}
+         }
+           y();
+       }
+   }
+   obj.x();
+     
+   Ex 3: For a nested arrow function inside arrow function
+    const obj = {
+      a: "Akshay",
+      x: ()=> {
+      const y = () => {
+      console.log(this); -> it refers to its Lexical enclosed value, hence give o/p: window object.
+         }
+           y();
+       }
+   }
+   obj.x();
+
+
+7)  this keyword inside DOM elements => reference to HTML elements   
+
+IMP => Keep In mind what is enclosed Lexical context
+IMP => Remember, when a function inside the object, then that function is a Method of the object.
+   - When you called the function which is inside the object then it gives you the values of object
+     in which currently "Method" is present.
+
+IMP => This keyword Value depends on how the function This is called...
+IMP => When you make a function part of object then its called "Method"

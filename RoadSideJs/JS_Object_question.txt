@@ -1,0 +1,359 @@
+
+const user = {
+  name: "Manu Abhishek",
+  age: 24,
+};
+
+delete user.name;
+console.log(user);
+
+//__________OUTPUT Based Question for delete_______________________________
+
+/*
+ * -In this below IIFE question we think delete will delete 5 and return some error or undefined
+    -But BIGGG NOOOOOOOOOOO
+   -There is no effect of delete because it delete only from objects not a local variable
+     -Hence output will be 5, as we passed 5
+ * 
+*/
+// IIFE are Immediately invoked function expression
+const func = (function (a) {
+  delete a;
+  return a;
+})(5);
+
+console.log(func);
+
+//__________OUTPUT Based Question_______________________________
+/**
+ * -Add a key with space => via putting in comma
+ * -Access that spaced key's value => via putting in array not dot=> users["he is great person"]
+ * -Delete that key value => delete users["he is great person"]
+ */
+
+const users = {
+  name: "Shahrikh Khan",
+  age: 50,
+  "he is great person": true,
+};
+
+// delete users["he is great person"];   deleting here
+console.log(users["he is great person"]); // accessing value here
+
+//__________OUTPUT Based Question_______________________________
+
+/**
+ *  -How to add dynamic key value pair to object
+ */
+const property = "firstName";
+const name = "Manu Abhishek";
+
+// Need this inside below object ==> firstName: Manu Abhishek
+// By upper variable
+
+const dynamicKeyValuePair = {
+  [property]: name,
+};
+console.log(dynamicKeyValuePair);
+
+//__________OUTPUT Based Question (for in loop)______________________________
+
+/**
+ * -Iterate inside object to print key and key's values
+ */
+
+const student = {
+  name: "Chris",
+  age: 24,
+  isTotallyAwesome: true,
+};
+
+for (key in student) {
+  console.log(key); // It gives only key
+  console.log(student[key]); // It gives value of keys
+}
+
+//____IMP_____OUTPUT Based Question (Two key with same name but different value, hence last given value consider)_________
+
+const obj = {
+  a: "one",
+  b: "two",
+  a: "three",
+};
+
+// (Two key with same name but different value, hence last given value consider)
+// hence output: {a: 'three', b: 'two'}
+console.log(obj);
+
+//__________Implement function Question______________________________
+/**
+ * -Create function multiplyByTwo(obj) that multiplies all
+ *  -numeric property value of nums by 2
+ */
+
+let nums = {
+  a: 100,
+  b: 200,
+  title: "My nums",
+};
+
+function multiplyByTwo(obj) {
+  for (key in obj) {
+    if (typeof obj[key] === "number") {
+      obj[key] = obj[key] * 2;
+    }
+  }
+}
+
+multiplyByTwo(nums);
+console.log(nums);
+
+//_______M.M.M.IMP___OUTPUT Based Question_____________________________
+
+const a = {};
+const b = { key: "b" };
+const c = { key: "c" };
+
+a[b] = 123; // a["[object object]"] = 123
+a[c] = 456; // a["[object object]"] = 456
+
+//==> when we assign b as key so it was object cannot be convert into string
+//==> hence a["[object object]"] = 123 assigned like it
+//==> and overlaps value for c and becomes 456
+
+console.log(a); // a["[object object]"] = 456
+console.log(a[b]);
+
+//_________What is JSON.stringify and JSON.parse and where to use give example__________________
+
+/**
+ * -What is JSON.stringify and JSON.parse
+ *   -Explain with example
+ *    -Where to use it?
+ */
+
+const userData = {
+  name: "Manu",
+  age: 23,
+};
+
+const strObj = JSON.stringify(userData);
+console.log(strObj); //output: {"name":"Manu","age":23}
+
+// use to store in local storage in key value pair by converting in string
+// If we dont convert in string then still acess in local storage it give [object, object]
+localStorage.setItem("test", strObj);
+
+// Converted back to json from string by JSON.parse
+console.log(JSON.parse(localStorage.getItem("test")));
+
+//________________Output question (by spread operator)________________________
+
+const user1 = { name: "Lydia", age: 21 };
+const admin = { admin: true, ...user1 };
+
+console.log(admin);
+//output==> {admin: true, name: 'Lydia', age: 21}
+
+//________________Output question (On stringify)________________________
+
+const setting = {
+  username: "Manu Abhishek",
+  level: 19,
+  health: 90,
+};
+const data = JSON.stringify(setting, ["level", "health"]);
+console.log(data); //output: {"level":19,"health":90}
+
+/**
+ * -Doing the stringify it totally ignore username b/c of
+ *   -string array of other two and other two only converted into stringify
+ *    -and ignore that user name property
+ */
+
+//_________Output question (on this with normalfn and arrowfn)__________________
+
+const shape = {
+  radius: 10,
+  diameter() {
+    return this.radius * 2;
+  },
+  perimeter: () => 2 * Math.PI * this.radius,
+};
+
+/**
+ *  -V.IMP remember this keyword with normal function point to outerobject key
+ *   -Buttt....
+ *  -this keyword with arrow fn point to window object
+ */
+console.log(shape.diameter()); //output: 20
+console.log(shape.perimeter()); //output: NaN
+
+//_________Output question (on Destructuring, nested Destructuring and name conflict )__________________
+
+let user2 = {
+  firstname: "Ratan Tata",
+  age: 50,
+};
+
+const firstName = "Manu";
+// To avoid name conflict firstName and we want to prnt both
+// can change name via this way firstname: myName
+const { firstname: myName } = user2;
+console.log(myName);
+console.log(firstName);
+
+//--------Nested Destructing name access-------------------
+
+let user3 = {
+  firstname: "Ratan Tata",
+  age: 50,
+  fullName: {
+    first: "Manu557",
+    last: "Panjoria",
+    insider: {
+      lastOne: "Hello world",
+    },
+  },
+};
+//==> remember for nested destructring after colon bracket comes{}
+const {
+  fullName: { first },
+} = user3;
+console.log(first);
+
+//==> triple nesting
+const {
+  fullName: {
+    insider: { lastOne },
+  },
+} = user3;
+console.log(lastOne);
+
+//_________Output question (Rest (it must be at last) and Spread (can be in middle))__________________
+/**
+ * -Can we asked that why it gives error b/c ...args Rest operator must be in last
+ *  -but Spread operator can be in middle
+ *
+ */
+
+// ----------Error code with ...args rest in mid---------------------------
+// function getItems(fruitList, ...args, favouriteFruit) {
+//   return [fruitList, ...args, favouriteFruit]
+// }
+
+// getItems(["banana", "apple"], "pear", "orange")
+
+function getItems(fruitList, favouriteFruit, ...args) {
+  return [fruitList, ...args, favouriteFruit];
+}
+console.log(getItems(["banana", "apple"], "pear", "orange"));
+
+//_________Output question (Object refrencing)__________________
+
+let x = { greeting: "Hey" };
+let y;
+y = x;
+
+/**
+ * -Here we assigned x obj inside y
+ *  -when we changed the x value fro Hey to Hello it automatically changed in y also
+ *   -b/c object refrencing => when we copy one obj to other var we are not copying the property and value
+ *    -instead we provide refrence to that space to other varibale also
+ *
+ *   -If you can anything inside x or y it will affect both (b/c Object refrencing)
+ */
+
+x.greeting = "Hello";
+console.log(y.greeting);
+
+// -------------Another Object refrencing question-------------------------------------------
+/**
+ * -This will always return false b/c both obj point to diff memory
+ *  -If they point same memory then it would be true
+ */
+console.log({ k: 1 } === { k: 1 });
+console.log({ k: 1 } === { k: 1 });
+
+// -------------Another Object refrencing question-------------------------------------------
+
+let person = { name: "Lydia" };
+const members = [person];
+person = null;
+console.log(members); // {name: 'Lydia'}
+console.log(members.name); // Null
+// console.log(person.name); // Null
+/**
+ * -B/C yaha pr person variable null hua hai naki PROPERTY and VALUE
+ */
+
+// -------------Another Object refrencing question-------------------------------------------
+
+const value = { number: 10 };
+
+const multiplyy = (x = { ...value }) => {
+  console.log((x.number = x.number * 2));
+};
+/**
+ * -Jab without value arguement k BINA paas kia tb clone nhi kr rha tha reference
+ *  -on both call of multiplyy() it gives 20
+ */
+multiplyy();
+multiplyy();
+
+/**
+ * -Jab humne arguement ki tarah pass kia tb esne clone krli reference
+ *  -Hence on first time it gives 20 but now {number: 20} NOT {number: 10}
+ *   -Hence next time it gives 40
+ */
+multiplyy(value);
+multiplyy(value);
+
+// ---------V.V.IMP----Another Object refrencing question-------------------------------------------
+
+function changeAgeandReference(person) {
+  //personObj1 age change b/c of reference
+  person.age = 25;
+
+  // -Here nothing will happen b/c we are reassigning the person it will not affect the reference value
+  //  -instead create new different obj
+  person = {
+    name: "John",
+    age: 50,
+  };
+  return person;
+}
+
+const personObj1 = {
+  name: "Alex",
+  age: 30,
+};
+
+const personObj2 = changeAgeandReference(personObj1);
+console.log(personObj1); //output: {name: 'Alex', age: 25}
+console.log(personObj2); //output: {name: 'John', age: 50}
+
+//-----V.V.IMP----Another Object refrencing (shallow vs deep copy)--------
+
+/**
+ * Shallow copy => when we copy an object to another object but other object still
+ *   -hold the reference to the original object is called shallow copy
+ * Deep copy => When we clone an object completely into another variable is called deep copy
+ *    -so we do not have refernces to the original object is called deep copy
+ */
+
+//==> 3 ways to clone an object
+
+let user5 = {
+  name: "Manu Abhishek",
+  age: 24,
+  inner: {
+    lastName: "panjoria",
+  },
+};
+const objClone = Object.assign({}, user5); // 1st way to clone
+const objClone = JSON.parse(JSON.stringify(user5)); //2nd way to clone
+const objClone = { ...user5 }; //3rd way to clone
+
+objClone.name = "Shahrukh khan"; // It will not affect original object
+console.log(user5, objClone);

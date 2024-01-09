@@ -1,0 +1,71 @@
+
+/*
+ -Map vs forEach Difference (Map s actual array b modify krskte hai but nhi kre toh apna new array deta hi hai)
+   -1) On map we can do chaining b/c it return new array but on forEach can not possible
+        b/c it DOES NOT RETURN NEW ARRAY (Original array m change krdega). 
+
+*/
+const arr = [2, 5, 3, 4, 7];
+
+const mapResult = arr.map((it, i) => {
+  return it + 2;
+});
+
+// console.log(mapResult);
+// console.log(arr);
+
+const forEachResult = arr.forEach((it, i) => {
+  arr[i] = it + 3;
+});
+
+console.log(forEachResult); // => undefined dega b/c forEach does not return new array like map
+console.log(arr);
+
+const user = [
+  { firstName: "akshay", lastName: "saini", age: "26" },
+  { firstName: "donald", lastName: "trump", age: "75" },
+  { firstName: "elon", lastName: "musk", age: "50" },
+  { firstName: "deepika", lastName: "padukone", age: "33" },
+  { firstName: "Shahrukh", lastName: "Khan", age: "52" },
+];
+
+// Return first name in capital letters
+const names = user.map((it) => {
+  return it.firstName.toUpperCase();
+});
+console.log(names);
+
+//Return details whose age is more than 30
+
+const ageMoreThan30 = user.reduce((acc, curr) => {
+  if (curr.age > 30) {
+    acc.push(curr);
+  }
+  return acc;
+}, []);
+console.log(ageMoreThan30);
+
+//_______________________________________________________________
+
+let students = [
+  { name: "Piyush", rollNumber: 31, marks: 80 },
+  { name: "Jenny", rollNumber: 15, marks: 69 },
+  { name: "Kaushal", rollNumber: 16, marks: 35 },
+  { name: "Dilpreet", rollNumber: 7, marks: 55 },
+];
+
+// Add 20+ marks and after that only return who have more tha 60 marks in sum
+const compi = students
+  .map((it, i) => {
+    if (it.marks < 60) {
+      it.marks = it.marks + 20;
+    }
+    return it;
+  })
+  .filter((stu) => stu.marks > 60)
+  .reduce((acc, curr) => {
+    acc = acc + curr.marks;
+    return acc;
+  }, 0);
+
+console.log(compi);

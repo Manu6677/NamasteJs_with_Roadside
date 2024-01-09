@@ -1,0 +1,43 @@
+console.log("start");
+
+setTimeout(function cb() {
+  console.log("callback");
+}, 5000);
+
+// million of line code here
+
+const startData = new Date().getTime();
+let endDate = new Date().getTime();
+
+while (endDate < startData + 10000) {
+  endDate = new Date().getTime();
+}
+console.log("While expires");
+
+/**
+ * -SO in this case we have setTime out which is actually resolved in 5 sec
+ * -But the global execution context in the CALL STACK for 10 second
+ *   -even though callback is resolved but wait to be execute once callstack empty
+ *    -This is trust issuee with setTimeout  
+ */
+
+-----------------------------------------------------------------------------------------------
+
+console.log("start");
+
+function cb() {
+  console.log("Inside callback");
+}
+setTimeout(cb, 0);
+
+console.log("end");
+
+/**
+ * -Even though the timer is zero but still it will attach the timer of 0 second and put inside the
+ *  -callback queue
+ * 
+ *  -Hence output
+ *   start
+ *   end
+ *   Inside callback
+ */

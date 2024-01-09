@@ -1,0 +1,69 @@
+
+function countfn() {
+  let count = 0;
+  return function counter() {
+    count++;
+    console.log(count);
+  };
+}
+
+let m = countfn();
+m();
+m();
+m();
+
+let n = countfn();
+n();
+n();
+n();
+
+/*
+  ______V.V.IMP____________
+
+  -Through the closure we can achive the data hiding , encapsulation as below trying to access the
+   -count variable inside countfn function but can not, it gives error count is not defined
+    -b/c count act as a private variable it has a differentt scope
+
+  ______V.V.IMP____________
+
+  -Here when we called countfn function different in n, m they act as a new copy of function 
+   -and start from 1 or as it called first time (new counter, new independent copy)
+*/
+// console.log(count);
+
+// Is your code is scalable now just in case to create decrement counter also
+// ---> For that we need to have an constructer
+
+function Outercounter() {
+  let count = 0;
+  this.incrementCounter = function () {
+    count++;
+    console.log(count);
+  };
+  this.decrementCounter = function () {
+    count--;
+    console.log(count);
+  };
+}
+
+const r = new Outercounter();
+r.incrementCounter();
+r.incrementCounter();
+r.incrementCounter();
+r.decrementCounter();
+
+/*
+  ______V.V.IMP____________
+   
+  -Remember in Let
+    1)-We can declare and initialize at later
+    2)-We can change it value at later point
+    3)-It do not allow name duplication
+
+  -Remember in const
+    1)-We can declare and initialize at same time can not initialize later 
+    2)-We can change it value at later point not possible (give Type error)
+    3)-It do not allow name duplication
+
+
+*/

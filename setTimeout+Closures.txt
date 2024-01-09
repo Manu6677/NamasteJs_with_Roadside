@@ -1,0 +1,73 @@
+
+/*
+ Clousers: In this ex: JavaScript wait for none so Callback function get
+   -attached attached timer with it and javascript move forward
+    -after the time expires of setTimeout because of closures i knows its memory space
+      so prints 10;
+*/
+
+// function x() {
+//   var i = 10;
+//   setTimeout(function () {
+//     console.log(i);
+//   }, 2000);
+
+//   console.log("Namaste Javascript");
+// }
+// x();
+
+/*
+  --Print 1 to 5 according to the number gap (in seconds)
+   
+   Explaination of below weird fun's output
+     ->Here b/c of closures clg i points to same memory space in environment
+       -setTimeOut made a copy of 5 functions and attached the timer to it but 
+        -when the timer expires loop already reached to 6 and b/c it point to same
+          -memory space it prints 6 (b/c in all 5 fn copy i points to same memory space)
+
+   ==> so the problem b/c of pointing to same memory space we can fix it by making diff memory space
+       - for it use let(b/c it is block scope)
+*/
+
+function x() {
+  for (let i = 1; i <= 5; i++) {
+    setTimeout(function () {
+      console.log(i);
+    }, i * 1000);
+    console.log("js in loop");
+  }
+  console.log("js outside of loop");
+}
+x();
+
+/*
+Solve the same problem of this function with var variable
+
+function x() {
+  for (var i = 1; i <= 5; i++) {
+    setTimeout(function () {
+      console.log(i);
+    }, i * 1000);
+    console.log("js in loop");
+  }
+  console.log("js outside of loop");
+}
+x();
+
+*/
+
+ function x() {
+   for (var i = 1; i <= 5; i++) {
+     function c(k) {
+       setTimeout(function () {
+         console.log(k);
+       }, k * 1000);
+       console.log("inside deeper fn");
+     }
+     console.log("js in loop");
+     c(i);
+   }
+   console.log("js outside of loop");
+ }
+
+// x();
